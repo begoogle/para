@@ -11,11 +11,13 @@ class Transport
 public:
 	explicit Transport(int distance) : distance(distance){}
 
-	virtual double routePrice() const { return distance * 1; }
+	virtual double routePrice() const = 0;
 	virtual std::string PrintInfo() const { return std::format("Я транспорт. Затраты: {}\n", routePrice()); }
 
-	double GetDistance() const;
-	void SetDistance(double distance);
+	virtual double GetDistance() const;
+	virtual void SetDistance(double distance);
+
+	virtual ~Transport() = default;
 
 protected:
 	double distance = 0;
@@ -26,8 +28,20 @@ class Taxi : public Transport
 public:
 	Taxi(int distance) : Transport(distance) {}
 
-	double routePrice() const { return distance * 3.5; }
-	std::string PrintInfo() const { return std::format("Я такси. Затраты: {}\n", routePrice()); }
+	double routePrice() const override { return distance * 3.5; }
+	std::string PrintInfo() const override { return std::format("Я такси. Затраты: {}\n", routePrice()); }
+
+private:
+
+};
+
+class Plane : public Transport
+{
+public:
+	Plane(int distance) : Transport(distance) {}
+
+	double routePrice() const override { return distance * 3.5; }
+	std::string PrintInfo() const override { return std::format("Я самолет. Затраты: {}\n", routePrice()); }
 
 private:
 
